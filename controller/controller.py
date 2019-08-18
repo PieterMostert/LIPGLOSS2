@@ -219,6 +219,9 @@ class Controller:
                 self.display_restr_dict['other_'+ot].display(1001 + other_order.index(ot))
             else:
                 self.mw.other_select_button[ot].state(['!pressed'])
+
+        # Clear 2-d projection
+        self.mw.proj_canvas.delete("all")
         
         # Set the command for x and y variable selection boxes
         for key, restr in self.display_restr_dict.items():

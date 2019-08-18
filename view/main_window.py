@@ -44,7 +44,7 @@ class MainWindow:
 
     def __init__(self):
         self.root = Tk()
-        self.root.title("LIPGLOSS")  # LInear Programming GLaze Oxide Software System. Terrible acronym, though it also happens to be a song by Pulp.
+        self.root.title("LIPGLOSS2")  # LInear Programming GLaze Oxide Software System. Terrible acronym, though it also happens to be a song by Pulp.
                 
         # Create the outer content frames
         self.root.grid_columnconfigure(0, weight=1)
