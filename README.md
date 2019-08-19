@@ -9,10 +9,10 @@ See README.pdf in README LaTeX files for more info. This needs to be updated to 
 
 I *think* the following will be enough to get set up on a Windows machine:
 
-* Install the latest version of [MiniConda3](https://docs.conda.io/en/latest/miniconda.html) (Currently Python 3.7)
-* Open the Anaconda Prompt, and type `conda install -c conda-forge cvxopt` to install the [CVXOPT](https://cvxopt.org/install/index.html) API.
-* Clone this repository using Git: `git clone https://github.com/PieterMostert/LIPGLOSS2.git`
-* Run the main.py script to open the GUI
+* Install the latest version of [MiniConda3](https://docs.conda.io/en/latest/miniconda.html) (Currently Python 3.7).
+* Open the Anaconda Prompt, and type `conda install -c conda-forge cvxopt` to install the pre-built [CVXOPT](https://cvxopt.org/install/index.html) API.
+* Clone this repository using Git: `git clone https://github.com/PieterMostert/LIPGLOSS2.git`.
+* Run the main.py script to open the GUI.
 
 
 If you manage to install Lipgloss2 on another operating system, please add instructions to this file.
