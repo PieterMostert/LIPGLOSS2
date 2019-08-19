@@ -107,10 +107,10 @@ class Controller:
             calculated_bounds = self.lprp.calc_restrictions(self.mod.current_recipe, self.mod.restr_dict)
             t1 = time.process_time()  
             for key in self.mod.current_recipe.restriction_keys:
-                res = self.display_restr_dict[key]
                 dp =  self.mod.restr_dict[key].dec_pt
-                for eps in ['lower', 'upper']:               # display calculated lower and upper bounds.
-                    res.calc_bounds[eps].config(text=pretty_formatting(calculated_bounds[eps][key], dp))
+                calculated_bounds_key = {eps: calculated_bounds[eps][key] for eps in ['lower', 'upper']}
+                res = self.display_restr_dict[key]
+                res.set_calc_bounds(calculated_bounds_key, dp)  # display the calculated bounds
 
             self.mw.proj_canvas.delete("all")
             var = self.mod.current_recipe.variables
@@ -614,11 +614,5 @@ class Controller:
             else:
                 for ox in self.mod.current_recipe.oxides:
                     self.display_restr_dict[et+ox].hide()
-
-def pretty_formatting(t, dp):
-    ans = ('%.'+str(dp)+'f') % t
-    if ans == ('%.'+str(dp)+'f') % -0.0:
-        ans = ans[1:]  # drop the negive sign
-    return ans
 
     

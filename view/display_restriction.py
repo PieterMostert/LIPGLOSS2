@@ -23,6 +23,12 @@ try:
 except ImportError:
     from pretty_names import prettify, pretty_entry_type
 
+def pretty_formatting(t, dp):
+    ans = ('%.'+str(dp)+'f') % t
+    if ans == ('%.'+str(dp)+'f') % -0.0:
+        ans = ans[1:]  # drop the negative sign
+    return ans
+
 class DisplayRestriction:
     'Oxide UMF, oxide % molar, oxide % weight, ingredient, SiO2:Al2O3 molar, LOI, cost, etc'
     
@@ -129,3 +135,11 @@ class DisplayRestriction:
             pass     # Don't change bound if the restriction is currently displayed
         else:
             self.upp.set(self.default_upp)    # Change default bound that will appear the next time the restriction is displayed   
+    
+    def set_calc_bounds(self, calculated_bounds, dp):
+        """
+        calculated_bounds is a dictionary with keys 'lower' and 'upper'
+        dp (non-negative integer) Number of decimal places to display
+         """
+        for eps in ['lower', 'upper']:
+            self.calc_bounds[eps].config(text=pretty_formatting(calculated_bounds[eps], dp))
