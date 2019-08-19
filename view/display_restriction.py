@@ -141,5 +141,5 @@ class DisplayRestriction:
         calculated_bounds is a dictionary with keys 'lower' and 'upper'
         dp (non-negative integer) Number of decimal places to display
          """
-        for eps in ['lower', 'upper']:
-            self.calc_bounds[eps].config(text=pretty_formatting(calculated_bounds[eps], dp))
+        for bound in ['lower', 'upper']:
+            self.calc_bounds[bound].config(text=pretty_formatting(calculated_bounds[bound], dp))

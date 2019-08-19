@@ -105,43 +105,43 @@ class Controller:
             
         if self.lprp.go_ahead:
             calculated_bounds = self.lprp.calc_restrictions(self.mod.current_recipe, self.mod.restr_dict)
-            t1 = time.process_time()  
-            for key in self.mod.current_recipe.restriction_keys:
-                dp =  self.mod.restr_dict[key].dec_pt
-                calculated_bounds_key = {eps: calculated_bounds[eps][key] for eps in ['lower', 'upper']}
-                res = self.display_restr_dict[key]
-                res.set_calc_bounds(calculated_bounds_key, dp)  # display the calculated bounds
+            if calculated_bounds:
+                t1 = time.process_time()  
+                for key in self.mod.current_recipe.restriction_keys:
+                    dp =  self.mod.restr_dict[key].dec_pt
+                    res = self.display_restr_dict[key]
+                    res.set_calc_bounds(calculated_bounds[key], dp)  # display the calculated bounds
 
-            self.mw.proj_canvas.delete("all")
-            var = self.mod.current_recipe.variables
-            if len(var) == 2:
-                t2 = time.process_time()
-                vertices = self.lprp.calc_2d_projection(self.mod.current_recipe, self.mod.restr_dict)
-                if self.mod.restr_dict[var['x']].normalization == self.mod.restr_dict[var['y']].normalization:
-                    scaling = 1
-                else:
-                    x_pts = [p[0] for p in vertices]
-                    y_pts = [p[1] for p in vertices]
-                    delta_x = max(x_pts) - min(x_pts)
-                    delta_y = max(y_pts) - min(y_pts)
-                    if delta_y == 0 or delta_x == 0:
+                self.mw.proj_canvas.delete("all")
+                var = self.mod.current_recipe.variables
+                if len(var) == 2:
+                    t2 = time.process_time()
+                    vertices = self.lprp.calc_2d_projection(self.mod.current_recipe, self.mod.restr_dict)
+                    if self.mod.restr_dict[var['x']].normalization == self.mod.restr_dict[var['y']].normalization:
                         scaling = 1
                     else:
-                        scaling = delta_x / delta_y
+                        x_pts = [p[0] for p in vertices]
+                        y_pts = [p[1] for p in vertices]
+                        delta_x = max(x_pts) - min(x_pts)
+                        delta_y = max(y_pts) - min(y_pts)
+                        if delta_y == 0 or delta_x == 0:
+                            scaling = 1
+                        else:
+                            scaling = delta_x / delta_y
 
-                # Display 2-d projection of feasible region onto 'x'-'y' axes           
-                self.mw.proj_canvas.create_polygon_plot(vertices, scaling)
-                t3 = time.process_time()
-                print('Times:', t1 - t0, t3 - t2)
-            else:
-                print('Time:', t1 - t0)
-            self.mw.root.lift()    # Doesn't work, and I don't know why
-            #self.mw.root.attributes('-topmost', 1)
-            #self.mw.root.attributes('-topmost', 0)
-            try:
-                self.ing_editor.toplevel.lower()
-            except:
-                pass
+                    # Display 2-d projection of feasible region onto 'x'-'y' axes           
+                    self.mw.proj_canvas.create_polygon_plot(vertices, scaling)
+                    t3 = time.process_time()
+                    print('Times:', t1 - t0, t3 - t2)
+                else:
+                    print('Time:', t1 - t0)
+                self.mw.root.lift()    # Doesn't work, and I don't know why
+                #self.mw.root.attributes('-topmost', 1)
+                #self.mw.root.attributes('-topmost', 0)
+                try:
+                    self.ing_editor.toplevel.lower()
+                except:
+                    pass
 
     def get_bounds(self):
         for key in self.mod.current_recipe.restriction_keys:

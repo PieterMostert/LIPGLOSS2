@@ -243,24 +243,26 @@ class LpRecipeProblem():
             self.inequalities.append(self.lp_var['other'][i] <= other_upper * normalization) 
 
         # Calculate the upper and lower bounds imposed on all the variables:
-        calc_bounds = {-1:{}, 1:{}}   # -1 for lower bounds, 1 for upper bounds
+        calc_bounds = {} #{-1:{}, 1:{}}   # -1 for lower bounds, 1 for upper bounds
         for key in recipe.restriction_keys:
+            calc_bounds[key] = {}
             res = restr_dict[key]
             norm = self._linear_combination(res.normalization)
             normalization = (norm==1) # Normalization of the restriction in question. There's a lot of
                                       # unnecessary repetition of this step, but it seems this doesn't 
                                       # slow things down a whole lot
             opt_var = self._parser(res.objective_func)
-            for eps in [1, -1]:               # calculate lower and upper bounds.
+            for eps, bound in zip([1, -1], ['lower', 'upper']):        # calculate lower and upper bounds.
                 lp = op(eps*opt_var, self.relations + self.inequalities + [normalization])
                 lp.solve(solver='glpk', options={'glpk':{'msg_lev':'GLP_MSG_OFF'}})
                 if lp.status == 'optimal':
-                    calc_bounds[-eps][key] = eps*lp.objective.value()[0]
+                    calc_bounds[key][bound] = eps*lp.objective.value()[0]
                 else:
                     messagebox.showerror(" ", lp.status)
-                    return 
-
-        return {'lower':calc_bounds[-1], 'upper':calc_bounds[1]}
+                    return 0
+                    
+        return calc_bounds
+         #{'lower':calc_bounds[-1], 'upper':calc_bounds[1]}
 
     def calc_2d_projection(self, recipe, restr_dict):
         """This is designed to be run when only the x and y variables have changed; it does not
