@@ -15,9 +15,10 @@
 # <http://www.gnu.org/licenses/>.
 
 # Contact: pi.mostert@gmail.com
-
+import tkinter as tkk
 import tkinter.messagebox
 from numbers import Number
+
 
 from .dragmanager import *
 from .main_window import MainWindow
