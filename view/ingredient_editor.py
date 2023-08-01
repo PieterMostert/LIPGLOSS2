@@ -18,6 +18,7 @@
 
 import tkinter.messagebox
 from numbers import Number
+import tkinter as tkk
 
 from .dragmanager import *
 from .main_window import MainWindow
